@@ -20,7 +20,7 @@ var testTable = map[string]string{
 }
 
 func TestDNSResultsAreValid(t *testing.T) {
-	resolver := NewResolver(&MockLookupResolver{})
+	resolver := NewResolver(&MockLookupResolver{0})
 
 	for domain, ip := range testTable {
 		addr, err := resolver.Resolve(domain)
@@ -42,4 +42,17 @@ func TestResolverInterfaceIsUsed(t *testing.T) {
 
 		assert.Equal(t, callNumber, lookupResolver.Calls)
 	}
+}
+
+func TestResolverUsesCache(t *testing.T) {
+	assert.NotEmpty(t, "")
+}
+
+func TestResolverDoesntLookupExistingDomainNames(t *testing.T) {
+	/* To implement */
+	assert.NotEmpty(t, "")
+}
+
+func TestResolverStoresNewlyEncounteredDomainNames(t *testing.T) {
+
 }
