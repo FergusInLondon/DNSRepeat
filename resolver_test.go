@@ -5,22 +5,13 @@ import (
 	"testing"
 )
 
-type MockLookupResolver struct {
-	Calls int
-}
-
-func (mr *MockLookupResolver) LookupHost(host string) (addrs []string, err error) {
-	mr.Calls++
-	return []string{testTable[host], "likelywontusethis", "orthis,butwe'llsee"}, nil
-}
-
 var testTable = map[string]string{
 	"google.com":   "127.0.0.1",
 	"resolver.com": "192.168.0.1",
 }
 
 func TestDNSResultsAreValid(t *testing.T) {
-	resolver := NewResolver(&MockLookupResolver{0})
+	resolver, _, _, _ := create_resolver()
 
 	for domain, ip := range testTable {
 		addr, err := resolver.Resolve(domain)
@@ -31,11 +22,9 @@ func TestDNSResultsAreValid(t *testing.T) {
 }
 
 func TestResolverInterfaceIsUsed(t *testing.T) {
-	lookupResolver := &MockLookupResolver{}
-	resolver := NewResolver(lookupResolver)
+	resolver, _, _, lookupResolver := create_resolver()
 
 	callNumber := 0
-
 	for domain, _ := range testTable {
 		resolver.Resolve(domain)
 		callNumber++
@@ -45,14 +34,16 @@ func TestResolverInterfaceIsUsed(t *testing.T) {
 }
 
 func TestResolverUsesCache(t *testing.T) {
-	assert.NotEmpty(t, "")
+	/* To implement */
+	assert.NotEmpty(t, nil)
 }
 
 func TestResolverDoesntLookupExistingDomainNames(t *testing.T) {
 	/* To implement */
-	assert.NotEmpty(t, "")
+	assert.NotEmpty(t, nil)
 }
 
 func TestResolverStoresNewlyEncounteredDomainNames(t *testing.T) {
-
+	/* To implement */
+	assert.NotEmpty(t, nil)
 }

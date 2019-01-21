@@ -6,7 +6,7 @@ type LookupResolver interface {
 
 type Resolver struct {
 	LookupResolver LookupResolver
-	Cache DNSCache
+	Cache          DNSCache
 }
 
 func NewResolver(resolver LookupResolver) *Resolver {
