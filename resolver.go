@@ -1,6 +1,9 @@
 package main
 
-import "strings"
+import (
+	"net"
+	"strings"
+)
 
 // @see https://golang.org/pkg/net/#LookupHost
 type LookupResolver interface {
@@ -14,6 +17,11 @@ type Resolver struct {
 
 type ResolverInterface interface {
 	Resolve(domain string) (string, error)
+}
+
+type NativeLookupResolver struct {}
+func (nlr *NativeLookupResolver) LookupHost(host string) (addrs []string, err error) {
+	return net.LookupHost(host)
 }
 
 func NewResolver(resolver LookupResolver, cache *DNSCache) *Resolver {
