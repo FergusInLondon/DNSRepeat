@@ -36,7 +36,7 @@ func TestResolverInterfaceIsUsed(t *testing.T) {
 	resolver, _, _, lookupResolver := create_resolver()
 
 	callNumber := 0
-	for domain, _ := range uncachedDomains {
+	for domain := range uncachedDomains {
 		resolver.Resolve(domain)
 		callNumber++
 
@@ -48,7 +48,7 @@ func TestResolverUsesCache(t *testing.T) {
 	resolver, _, mockCache, _ := create_resolver()
 
 	cacheCalls := 0
-	for domain, _ := range uncachedDomains {
+	for domain := range uncachedDomains {
 		resolver.Resolve(domain)
 		cacheCalls++
 
@@ -60,7 +60,7 @@ func TestResolverDoesntLookupExistingDomainNames(t *testing.T) {
 	resolver, _, _, lookupResolver := create_resolver()
 
 	callNumber := 0
-	for domain, _ := range cachedDomains {
+	for domain := range cachedDomains {
 		resolver.Resolve(domain)
 		callNumber++
 
@@ -72,7 +72,7 @@ func TestResolverStoresNewlyEncounteredDomainNames(t *testing.T) {
 	resolver, _, mockCache, _ := create_resolver()
 
 	cacheCalls := 0
-	for domain, _ := range uncachedDomains {
+	for domain := range uncachedDomains {
 		resolver.Resolve(domain)
 		cacheCalls++
 
