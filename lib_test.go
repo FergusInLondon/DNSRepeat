@@ -20,18 +20,28 @@ type MockLookupResolver struct {
 
 func (mr *MockLookupResolver) LookupHost(host string) (addrs []string, err error) {
 	mr.Calls++
-	return []string{testTable[host], "likelywontusethis", "orthis,butwe'llsee"}, nil
+	return []string{uncachedDomains[host], "likelywontusethis", "orthis,butwe'llsee"}, nil
 }
 
 func (mci *MockCacheInterface) Get(k string) (interface{}, bool) {
 	mci.GetCalls++
 
-	if k == "isalreadycached.com" {
-		return "127.0.0.1", true
+	if addr, ok := cachedDomains[k]; ok {
+		return addr, true
 	}
 
 	return "", false
 }
+
+var uncachedDomains = map[string]string{
+	"google.com":   "127.0.0.1",
+	"resolver.com": "192.168.0.1",
+}
+
+var cachedDomains = map[string]string{
+	"cachedDomain": "192.168.0.2",
+}
+
 
 func create_dns_cache() (*DNSCache, *MockCacheInterface) {
 	mockCache := &MockCacheInterface{0, 0}
@@ -41,9 +51,10 @@ func create_dns_cache() (*DNSCache, *MockCacheInterface) {
 }
 
 func create_resolver() (*Resolver, *DNSCache, *MockCacheInterface, *MockLookupResolver) {
-	lookupResolver := &MockLookupResolver{}
-	resolver := NewResolver(lookupResolver)
-
 	dnsCache, mockCache := create_dns_cache()
+
+	lookupResolver := &MockLookupResolver{}
+	resolver := NewResolver(lookupResolver, dnsCache)
+
 	return resolver, dnsCache, mockCache, lookupResolver
 }
