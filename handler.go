@@ -12,13 +12,11 @@ type JSONDNSRequest struct {
 }
 
 type DNSRequestHandler struct {
-	Handler http.HandlerFunc
 	Resolver ResolverInterface
 }
 
 func NewDNSHandler(r ResolverInterface) *DNSRequestHandler {
 	return &DNSRequestHandler{
-		Handler: Handler,
 		Resolver: r,
 	}
 }
@@ -41,10 +39,12 @@ func ParseHostFromRequest(body io.ReadCloser) (string, error) {
 	return dnsRequest.Hostname, nil
 }
 
-func Handler(writer http.ResponseWriter, req *http.Request) {
+func (drh *DNSRequestHandler) Handler(writer http.ResponseWriter, req *http.Request) {
 	_, err := ParseHostFromRequest(req.Body)
 	if err != nil {
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
+
 }
