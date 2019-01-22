@@ -22,6 +22,12 @@ This has been compiled without any issues using Go 1.11 on an Arch Linux derivat
 
 There's fairly comprehensive test coverage that *should* cover a multitude of edge cases.
 
+    ➜  DNSRepeat git:(master) ✗ go test -cover
+    PASS
+    coverage: 84.1% of statements
+    ok      _/home/fergus/Code/DNSRepeat    0.008s
+
+
 ## Deployment
 
 Deployment is trivial via Docker. (See `Dockerfile`)
@@ -65,3 +71,9 @@ A note: *yes, we're using the request body on a `GET` request*. This is a bit of
         "hostname": "gist.github.com"
         "address":  "192.30.253.119"
     }
+
+## Todo
+
+- Optional Debug Logging (Anonymised)
+- Cache persistence (dump upon signal, read upon init)
+- Configuration via Environment Variables

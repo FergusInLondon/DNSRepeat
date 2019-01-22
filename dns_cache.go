@@ -4,7 +4,6 @@ import (
 	"time"
 )
 
-
 // CacheInterface describes the method signatures required by any underlying
 //  caching mechanism. In this case, https://github.com/patrickmn/go-cache
 type CacheInterface interface {

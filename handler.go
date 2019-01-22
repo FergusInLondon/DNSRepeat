@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/asaskevich/govalidator"
 	"github.com/pkg/errors"
 	"io"
 	"net/http"
-	"github.com/asaskevich/govalidator"
 )
 
 // JSONDNSRequest is a wrapper for incoming DNS resolution requests.
@@ -82,7 +82,7 @@ func (drh *DNSRequestHandler) ServeHTTP(writer http.ResponseWriter, req *http.Re
 	writer.Header().Set("Content-Type", "application/json")
 	_ = json.NewEncoder(writer).Encode(&JSONDNSResponse{
 		Hostname: host,
-		Address: addr,
+		Address:  addr,
 	})
 
 	if err != nil {

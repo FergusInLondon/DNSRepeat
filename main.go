@@ -19,4 +19,3 @@ func main() {
 	// Listen and Serve
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
-

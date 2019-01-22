@@ -35,7 +35,7 @@ func (mci *MockCacheInterface) Get(k string) (interface{}, bool) {
 }
 
 type MockResolver struct {
-	Calls int
+	Calls      int
 	CalledWith string
 }
 
@@ -43,13 +43,12 @@ func (mr *MockResolver) Resolve(domain string) (string, error) {
 	mr.Calls++
 	mr.CalledWith = domain
 
-	if (domain == "willerror.com") {
+	if domain == "willerror.com" {
 		return "", errors.New("testing error")
 	}
 
 	return "127.0.0.1", nil
 }
-
 
 var uncachedDomains = map[string]string{
 	"google.com":   "127.0.0.1",

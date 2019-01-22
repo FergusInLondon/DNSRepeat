@@ -27,7 +27,7 @@ type Resolver struct {
 // NativeLookupResolver is the default (i.e non-testing) implementation of the
 //  LookupResolver interface. This could perhaps be best refactored as an adapter
 //  in the form of http.HandlerFunc?
-type NativeLookupResolver struct {}
+type NativeLookupResolver struct{}
 
 // LookupHost simply wraps around the native net.LookupHost method.
 func (nlr *NativeLookupResolver) LookupHost(host string) (addrs []string, err error) {

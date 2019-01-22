@@ -19,7 +19,7 @@ func TestEmptyPayloadToRequestHandler(t *testing.T) {
 	assert.Equal(t, http.StatusBadRequest, recorder.Code)
 }
 
-func TestMalformedJSONToRequestHandler(t *testing.T){
+func TestMalformedJSONToRequestHandler(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/", strings.NewReader("{ dewfeffef }"))
 	recorder := httptest.NewRecorder()
 

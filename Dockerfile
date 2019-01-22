@@ -9,8 +9,9 @@ RUN apk --update add git openssh gcc musl-dev && \
 
 COPY . .
 RUN go get -d -v && go build
+RUN ls
 
 # Stage 2: Copy executable to a lightweight image, and set the ENTRYPOINT
 FROM alpine
-COPY --from=0 /app/DNSRepeat /dnsrepeat
+COPY --from=0 /app/app /dnsrepeat
 ENTRYPOINT [ "/dnsrepeat" ]
