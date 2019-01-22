@@ -47,7 +47,7 @@ func (mr *MockResolver) Resolve(domain string) (string, error) {
 		return "", errors.New("testing error")
 	}
 
-	return "127,0,0,1", nil
+	return "127.0.0.1", nil
 }
 
 
