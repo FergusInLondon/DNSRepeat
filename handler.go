@@ -19,8 +19,8 @@ type JSONDNSResponse struct {
 	Address  string `json:"address"`
 }
 
-// DNSHandler is simply HTTP HandlerFunc ("Handle(...)") with some additional
-//  context in the form of a ResolverInterface.
+// DNSRequestHandler is simply HTTP HandlerFunc ("Handle(...)") with some
+//  additional context in the form of a ResolverInterface.
 type DNSRequestHandler struct {
 	Resolver ResolverInterface
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func TestDNSResultsAreValid(t *testing.T) {
-	resolver, _, _, _ := create_resolver()
+	resolver, _, _, _ := LibTestCreateResolver()
 
 	for domain, ip := range uncachedDomains {
 		addr, err := resolver.Resolve(domain)
@@ -18,7 +18,7 @@ func TestDNSResultsAreValid(t *testing.T) {
 }
 
 func TestDNSIgnoresCharacterCase(t *testing.T) {
-	resolver, _, _, _ := create_resolver()
+	resolver, _, _, _ := LibTestCreateResolver()
 
 	for domain, ip := range uncachedDomains {
 		lowerResolution, err := resolver.Resolve(domain)
@@ -33,7 +33,7 @@ func TestDNSIgnoresCharacterCase(t *testing.T) {
 }
 
 func TestResolverInterfaceIsUsed(t *testing.T) {
-	resolver, _, _, lookupResolver := create_resolver()
+	resolver, _, _, lookupResolver := LibTestCreateResolver()
 
 	callNumber := 0
 	for domain := range uncachedDomains {
@@ -45,7 +45,7 @@ func TestResolverInterfaceIsUsed(t *testing.T) {
 }
 
 func TestResolverUsesCache(t *testing.T) {
-	resolver, _, mockCache, _ := create_resolver()
+	resolver, _, mockCache, _ := LibTestCreateResolver()
 
 	cacheCalls := 0
 	for domain := range uncachedDomains {
@@ -57,7 +57,7 @@ func TestResolverUsesCache(t *testing.T) {
 }
 
 func TestResolverDoesntLookupExistingDomainNames(t *testing.T) {
-	resolver, _, _, lookupResolver := create_resolver()
+	resolver, _, _, lookupResolver := LibTestCreateResolver()
 
 	callNumber := 0
 	for domain := range cachedDomains {
@@ -69,7 +69,7 @@ func TestResolverDoesntLookupExistingDomainNames(t *testing.T) {
 }
 
 func TestResolverStoresNewlyEncounteredDomainNames(t *testing.T) {
-	resolver, _, mockCache, _ := create_resolver()
+	resolver, _, mockCache, _ := LibTestCreateResolver()
 
 	cacheCalls := 0
 	for domain := range uncachedDomains {

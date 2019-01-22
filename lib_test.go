@@ -59,15 +59,15 @@ var cachedDomains = map[string]string{
 	"cacheddomain": "192.168.0.2",
 }
 
-func create_dns_cache() (*DNSCache, *MockCacheInterface) {
+func LibTestCreateDNSCache() (*DNSCache, *MockCacheInterface) {
 	mockCache := &MockCacheInterface{0, 0}
 	dnsCache := NewCache(mockCache)
 
 	return dnsCache, mockCache
 }
 
-func create_resolver() (*Resolver, *DNSCache, *MockCacheInterface, *MockLookupResolver) {
-	dnsCache, mockCache := create_dns_cache()
+func LibTestCreateResolver() (*Resolver, *DNSCache, *MockCacheInterface, *MockLookupResolver) {
+	dnsCache, mockCache := LibTestCreateDNSCache()
 
 	lookupResolver := &MockLookupResolver{}
 	resolver := NewResolver(lookupResolver, dnsCache)
@@ -75,7 +75,7 @@ func create_resolver() (*Resolver, *DNSCache, *MockCacheInterface, *MockLookupRe
 	return resolver, dnsCache, mockCache, lookupResolver
 }
 
-func create_handler() (*DNSRequestHandler, *MockResolver) {
+func LibTestCreateHandler() (*DNSRequestHandler, *MockResolver) {
 	mockResolver := &MockResolver{0, ""}
 	return NewDNSHandler(mockResolver), mockResolver
 }
