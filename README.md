@@ -1,25 +1,45 @@
 # DNSRepeater (Server)
 
-This is a simple little project that retrieves DNS records and sends them via a JSON response back to a client; in essence a crappy DNS proxy that can work over HTTP(S). In reality I'd like to expand upon it, docker it up, and see if it's a potential strategy to help fight against web censorship where DNS tampering is employed. (*How?* Essentially by using a local caching DNS server that's capable of resolving via HTTPS, but more on that later.)
+DNSRepeater is a small golang microservice that provides a *very simple* interface for providing DNS lookups over HTTP(S) - it's intended to support simple web browsing only. (for situations where DNS tampering may be employed as a form of censorship)
 
-Right now I'm a bit tired, as this was a "pre-bedtime" prototype more than anything - and I ended up getting a little sidetracked whilst working on it.
+It was wrote over the period of one evening, and as such may miss certain edge cases - although it has a comprehensive set of tests.
 
-There's decent test coverage, a complete lack of comments and a complet lack of documentation; needless to say they're tomorrows problems.
+## Rationale
 
-It also has no logging; but whether that's a good thing or not considering it's use-case.. well, remains to be seen. A debug flag will no doubt be enabled later.
+During a conversation on `/r/sysadmin` about the censorship of Venezuelan internet access under the current regime, one of key points was that the censorship relies on DNS tampering.
+
+Whilst it's possible to adjust DNS settings on a localhost - i.e by utilising OpenDNS or Google Public DNS - this can be mitigated at an ISP level by blacklisting those services, or filtering out DNS traffic that doesn't use their own servers.
+
+A potential workaround for this is to proxy DNS requests over an alternative transport protocol - the simplest being HTTP, which can be secured via HTTPS and appears as normal web traffic.
+
+To utilise this the client would needs to be able to resolve DNS requests locally and proxy the requests to the HTTP service.. but more on that later.
+
+## Development
+
+This has been compiled without any issues using Go 1.11 on an Arch Linux derivative.
+
+## Testing
+
+There's fairly comprehensive test coverage that *should* cover a multitude of edge cases.
+
+## Deployment
+
+Deployment is trivial via Docker. (See `Dockerfile`)
 
 ## Examples
 
-Here's a simple example
+A note: *yes, we're using the request body on a `GET` request*. This is a bit of an anti-pattern, but it's certainly valid.
 
-Request 1:
+#### Resolve the IP address for `github.com`
+
+**Request**
 
     GET: /
     {
         "hostname": "github.com"
     }
 
-Response:
+**Response**:
 
     Status: 200,
     Content-Type: application/json
@@ -28,15 +48,16 @@ Response:
         "address":  "140.82.118.3"
     }
 
+#### Resolve the IP address for `gist.github.com`
 
-Request 2:
+**Request**:
 
     GET: /
     {
         "hostname": "gist.github.com"
     }
 
-Response 2:
+**Response**:
 
     Status: 200,
     Content-Type: application/json

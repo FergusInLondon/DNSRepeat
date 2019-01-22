@@ -8,26 +8,34 @@ import (
 	"github.com/asaskevich/govalidator"
 )
 
+// JSONDNSRequest is a wrapper for incoming DNS resolution requests.
 type JSONDNSRequest struct {
 	Hostname string `json:"hostname"`
 }
 
+// JSONDNSResponse is a wrapper for key/value pair responses.
 type JSONDNSResponse struct {
 	Hostname string `json:"hostname"`
 	Address  string `json:"address"`
 }
 
+// DNSHandler is simply HTTP HandlerFunc ("Handle(...)") with some additional
+//  context in the form of a ResolverInterface.
 type DNSRequestHandler struct {
-	Handler http.HandlerFunc
 	Resolver ResolverInterface
 }
 
+// NewDNSHandler returns a DNSRequestHandler object, and requires a valid
+//  ResolverInterface
 func NewDNSHandler(r ResolverInterface) *DNSRequestHandler {
 	return &DNSRequestHandler{
 		Resolver: r,
 	}
 }
 
+// ParseHostFromRequest takes the an io.ReadCloser (i.e the Request Body) and
+//  ensures it's correct, that there's a hostname property, and that the property
+//  is a valid hostname for the purposes of DNS.
 func ParseHostFromRequest(body io.ReadCloser) (string, error) {
 	invalidPayloadError := errors.New("Invalid Payload Supplied in Request")
 
@@ -50,6 +58,12 @@ func ParseHostFromRequest(body io.ReadCloser) (string, error) {
 	return dnsRequest.Hostname, nil
 }
 
+// ServeHTTP parses the initial request, ensuring the validity of the provided hostname,
+//  attempts to resolve it, and returns a key/pair (as JSON) to the client.
+//
+// Invalid Request Payloads result in a HTTP Status Code of 400.
+// Hostnames that are unable to be resolved return a HTTP Status Code of 404
+// Successful resolutions return a HTTP Status Code of 200, and the key/pair.
 func (drh *DNSRequestHandler) ServeHTTP(writer http.ResponseWriter, req *http.Request) {
 	host, err := ParseHostFromRequest(req.Body)
 	if err != nil {
@@ -66,7 +80,7 @@ func (drh *DNSRequestHandler) ServeHTTP(writer http.ResponseWriter, req *http.Re
 
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(writer).Encode(&JSONDNSResponse{
+	_ = json.NewEncoder(writer).Encode(&JSONDNSResponse{
 		Hostname: host,
 		Address: addr,
 	})
