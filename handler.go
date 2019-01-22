@@ -11,6 +11,18 @@ type JSONDNSRequest struct {
 	Hostname string `json:"hostname"`
 }
 
+type DNSRequestHandler struct {
+	Handler http.HandlerFunc
+	Resolver ResolverInterface
+}
+
+func NewDNSHandler(r ResolverInterface) *DNSRequestHandler {
+	return &DNSRequestHandler{
+		Handler: Handler,
+		Resolver: r,
+	}
+}
+
 func ParseHostFromRequest(body io.ReadCloser) (string, error) {
 	invalidPayloadError := errors.New("Invalid Payload Supplied in Request")
 
@@ -29,7 +41,7 @@ func ParseHostFromRequest(body io.ReadCloser) (string, error) {
 	return dnsRequest.Hostname, nil
 }
 
-func DNSRequestHandler(writer http.ResponseWriter, req *http.Request) {
+func Handler(writer http.ResponseWriter, req *http.Request) {
 	_, err := ParseHostFromRequest(req.Body)
 	if err != nil {
 		writer.WriteHeader(http.StatusBadRequest)

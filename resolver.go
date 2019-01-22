@@ -12,6 +12,10 @@ type Resolver struct {
 	Cache          *DNSCache
 }
 
+type ResolverInterface interface {
+	Resolve(domain string) (string, error)
+}
+
 func NewResolver(resolver LookupResolver, cache *DNSCache) *Resolver {
 	return &Resolver{
 		LookupResolver: resolver,
