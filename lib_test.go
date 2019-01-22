@@ -42,7 +42,6 @@ var cachedDomains = map[string]string{
 	"cacheddomain": "192.168.0.2",
 }
 
-
 func create_dns_cache() (*DNSCache, *MockCacheInterface) {
 	mockCache := &MockCacheInterface{0, 0}
 	dnsCache := NewCache(mockCache)

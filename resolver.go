@@ -15,7 +15,7 @@ type Resolver struct {
 func NewResolver(resolver LookupResolver, cache *DNSCache) *Resolver {
 	return &Resolver{
 		LookupResolver: resolver,
-		Cache: cache,
+		Cache:          cache,
 	}
 }
 
