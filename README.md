@@ -1,4 +1,4 @@
-# DNSRepeater (Server) [![Build Status](https://travis-ci.org/FergusInLondon/DNSRepeat.svg?branch=master)](https://travis-ci.org/FergusInLondon/DNSRepeat)
+# DNSRepeater (Server) [![Build Status](https://travis-ci.org/FergusInLondon/DNSRepeat.svg?branch=master)](https://travis-ci.org/FergusInLondon/DNSRepeat) [![Go Report Card](https://goreportcard.com/badge/github.com/FergusInLondon/DNSRepeat)](https://goreportcard.com/report/github.com/FergusInLondon/DNSRepeat)
 
 DNSRepeater is a small golang microservice that provides a *very simple* interface for providing DNS lookups over HTTP(S) - it's intended to support simple web browsing only. (for situations where DNS tampering may be employed as a form of censorship)
 
